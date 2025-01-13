@@ -8,6 +8,4 @@ mathematics, I will keep coming back to this on a later date in order to find th
 
 <br>
 
-Example: $$
-         193^{53} \mod 673
-         $$
+Example: $193^{53} \mod 673$
