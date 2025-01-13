@@ -4,10 +4,10 @@ This program was created for my former math teacher where a big component of the
 
 ___
 
-$193^{53} \mod 673$
+Example: $193^{53} \mod 673$
 <br>
 
-$193^{53}$\ is obviously way too big of a number to compute, so certain steps are taken to reduce this number in its lowest form (non-zero) with respect to its modulus.
+$193^{53}$ is obviously way too big of a number to compute, so certain steps are taken to reduce this number in its lowest form (non-zero) with respect to its modulus.
 
 <br>
 
