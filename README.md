@@ -9,8 +9,6 @@ Example: $193^{53} \mod 673$
 
 $193^{53}$ is obviously way too big of a number to compute, so certain steps are taken to reduce this number in its lowest form (non-zero) with respect to its modulus.
 
-<br>
-
 This is done in 3 steps:
 <br>
   [1]: Converting the exponent, which is in decimal form, to its binary equivalent. <br>
