@@ -2,11 +2,10 @@
 Author: Ramel Mirza
 Date: 09-19-2024
 Description: This script was created for the students at Mohawk College who are taking Discrete Mathematics and Statistics from Mrs. Stojanovska-Pocuca. It acts as a guide to help aid students when studying the square and multiply algorithm.
-Version: 1.00
+Version: 1.01
 """
 import tkinter as tk  # tkinter
 from tkinter import ttk  # themed tkinter
-
 
 class GUIApplication(tk.Tk):
     """
@@ -75,25 +74,25 @@ class GUIApplication(tk.Tk):
         self.header_3.place(x=210, y=65)
 
         bem_style = ttk.Style()
-        bem_style.configure("Fourth.TLabel", font=("Comic Sans MS", 16, "bold"))
-
+        bem_style.configure("Fourth.TLabel", font=("Comic Sans MS", 14, "bold", "italic"))
         # base
-        self.base_label = ttk.Label(self, text="Base! ", style="Fourth.TLabel")
+        self.base_label = ttk.Label(self, text="Base", style="Fourth.TLabel")
         self.base_label.pack(anchor="center")
-        self.base = ttk.Entry(self)
-        self.base.configure()
+
+        self.base = ttk.Entry(self, width=5)
         self.base.pack(anchor="center")
+        self.base.focus()
 
         # exponent
-        self.exponent_label = ttk.Label(self, text="Exponent! ", style="Fourth.TLabel")
+        self.exponent_label = ttk.Label(self, text="Exponent", style="Fourth.TLabel")
         self.exponent_label.pack(anchor="center")
-        self.exponent = ttk.Entry(self)
+        self.exponent = ttk.Entry(self, width=5)
         self.exponent.pack(anchor="center")
 
         # modulo
-        self.modulo_label = ttk.Label(self, text="Modulo! ", style="Fourth.TLabel")
+        self.modulo_label = ttk.Label(self, text="Modulo", style="Fourth.TLabel")
         self.modulo_label.pack(anchor="center")
-        self.modulo = ttk.Entry()
+        self.modulo = ttk.Entry(self, width=5)
         self.modulo.pack(anchor="center")
 
         # calculate button
@@ -103,6 +102,13 @@ class GUIApplication(tk.Tk):
         self.button.configure(padding=10)
         self.button.place(x=650, y=735)
 
+        # exit button
+        button_style = ttk.Style()
+        button_style.configure("Fifth.TButton", font=("Comic Sans MS", 13, "bold"))
+        self.button = ttk.Button(self, text="I'm done!", command=self.exit_out, style="Fifth.TButton")
+        self.button.configure(padding=10)
+        self.button.place(x=12, y=735)
+
         # steps
         self.output = ttk.Label(self)
         self.output.pack()
@@ -111,7 +117,17 @@ class GUIApplication(tk.Tk):
         """
         This function computes a large power of a positive base integer down to its non-zero equivalent in certain modulo (including the actual output of the answer)
         """
+        b = int(self.base.get())
+        e = int(self.exponent.get())
+        m = int(self.modulo.get())
+
         pass
+
+    def exit_out(self):
+        """
+        This function exits the program
+        """
+        self.destroy()
 
 
 def main():
