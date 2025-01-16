@@ -127,64 +127,71 @@ class GUIApplication(tk.Tk):
         """
         This function computes a large power of a positive base integer down to its non-zero equivalent in certain modulo (including the actual output of the answer)
         """
-        b = int(self.base.get())
-        e = int(self.exponent.get())
-        m = int(self.modulo.get())
 
-        ###################################
+        try:
+            b = int(self.base.get())
+            e = int(self.exponent.get())
+            m = int(self.modulo.get())
 
-        # step 1: convert exponent to binary
-        binary_str = ""
-        while e > 1:
+            ###################################
 
-            if e % 2 == 0:
-                binary_str += '0'
-                e = e // 2
-            else:
-                binary_str += '1'
-                e = e // 2
+            # step 1: convert exponent to binary
+            binary_str = ""
+            while e > 1:
 
-        if e == 1:
-            binary_str += '1'
-
-        binary_str_rev = reversed(binary_str)  # only to print it in the output label
-
-        # step 1.5: find powers of 2 that sum to b (effectively just finding 1's)
-        powers_of_2_and_indices = {}
-        for digit in range(0, len(binary_str)):
-            if binary_str[digit] == '1':
-                powers_of_2_and_indices[(int(math.pow(2, int(digit))))] = digit
-
-        # mapped it to a dictionary such that I get the value and the index which also happens to be the power the base is being raised to
-
-        # now I know that 2^max_power will be the limit, I can square the numbers up until the comparison equals the math.pow() of 2 and the value max_power - which is obviously the max value of the keys of the dictionary
-        max_power = max(list(powers_of_2_and_indices.keys()))
-        list_of_values = list(powers_of_2_and_indices.values())
-
-        # step 2: solve the squares
-        steps_to_complete = len(binary_str) - 1
-        i = 1
-        list_of_completed_squares = []
-        for j in range(1, max_power + 1, int(math.pow(2, i))):
-            if i == steps_to_complete:
-                break
-            post = int(math.pow(b, 2))
-            if post >= m:
-                post = post % m
-            if i in list_of_values:
-                list_of_completed_squares.append(post)
-            i += 1
-
-        # step 3: product the values that sum to the exponent
-        list_of_products = []
-        for i in list_of_completed_squares:
-            for j in list_of_completed_squares:
-                if i * j >= m:
-                    list_of_products.append((i * j) % m)
+                if e % 2 == 0:
+                    binary_str += '0'
+                    e = e // 2
                 else:
-                    list_of_products.append(i * j)
+                    binary_str += '1'
+                    e = e // 2
 
+            if e == 1:
+                binary_str += '1'
 
+            binary_str_rev = reversed(binary_str)  # only to print it in the output label
+
+            # step 1.5: find powers of 2 that sum to b (effectively just finding 1's)
+            powers_of_2_and_indices = {}
+            for digit in range(0, len(binary_str)):
+                if binary_str[digit] == '1':
+                    powers_of_2_and_indices[(int(math.pow(2, int(digit))))] = digit
+
+            # mapped it to a dictionary such that I get the value and the index which also happens to be the power the base is being raised to
+
+            # now I know that 2^max_power will be the limit, I can square the numbers up until the comparison equals the math.pow() of 2 and the value max_power - which is obviously the max value of the keys of the dictionary
+            max_power = max(list(powers_of_2_and_indices.keys()))
+            list_of_values = list(powers_of_2_and_indices.values())
+
+            # step 2: solve the squares
+            steps_to_complete = len(binary_str) - 1
+            i = 1
+            list_of_completed_squares = []
+            for j in range(1, max_power + 1, int(math.pow(2, i))):
+                if i == steps_to_complete:
+                    break
+                post = int(math.pow(b, 2))
+                if post >= m:
+                    post = post % m
+                    if i in list_of_values:
+                        list_of_completed_squares.append(post)
+                i += 1
+
+            # step 3: product the values that sum to the exponent
+            list_of_products = list_of_completed_squares.copy()
+            final_result = 1
+            for value in list_of_products:
+                final_result = (final_result * value) % m
+
+            if final_result >= m:
+                final_result = final_result % m
+
+            self.output.config(text=f"final result: {final_result}")
+
+        except ValueError as ve:
+            self.output.config(text=f"Not allowed!")
+        except TypeError as e:
+            self.output.config(text=f"Integers only!")
 
     ###################################
 
