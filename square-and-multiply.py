@@ -134,7 +134,7 @@ class GUIApplication(tk.Tk):
             e_print = e
             m = int(self.modulo.get())
 
-            self.output.config(text="")
+            self.output.config(text="") # reset text when user enters another set of b/e/m
 
             # step 1: convert exponent to binary
             binary_str = ""
