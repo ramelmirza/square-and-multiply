@@ -5,8 +5,9 @@ Description: This script was created for the students at Mohawk College who are 
 Version: 1.01
 """
 import math
-import tkinter as tk  # tkinter
-from tkinter import ttk  # themed tkinter
+import tkinter as tk
+from tkinter import ttk
+
 
 class GUIApplication(tk.Tk):
     """
@@ -113,9 +114,8 @@ class GUIApplication(tk.Tk):
 
         # steps
         steps_style = ttk.Style()
-        steps_style.configure("Sixth.TLabel", font=("Comic Sans MS", 10, "bold"))
-        self.output = ttk.Label(self,
-                                text="Output: ")  # will be updated as square and multiply computes
+        steps_style.configure("Sixth.TLabel", font=("Comic Sans MS", 11, "bold"))
+        self.output = ttk.Label(self, font = ("Comic Sans MS", 11, "bold"))
         self.output.pack(anchor="center", pady=50)
 
         # error label
@@ -131,9 +131,10 @@ class GUIApplication(tk.Tk):
         try:
             b = int(self.base.get())
             e = int(self.exponent.get())
+            e_print = e
             m = int(self.modulo.get())
 
-            ###################################
+            self.output.config(text="")
 
             # step 1: convert exponent to binary
             binary_str = ""
@@ -149,51 +150,74 @@ class GUIApplication(tk.Tk):
             if e == 1:
                 binary_str += '1'
 
-            binary_str_rev = reversed(binary_str)  # only to print it in the output label
+            binary_str_rev = binary_str[::-1]  # only to print it in the output label
+            self.output.config(text = self.output.cget('text') + f"STEP 1: Convert the exponent from DNS(\u2081\u2080): {e_print} to BINARY(\u2082): {binary_str_rev}\n")
 
             # step 1.5: find powers of 2 that sum to b (effectively just finding 1's)
             powers_of_2_and_indices = {}
             for digit in range(0, len(binary_str)):
                 if binary_str[digit] == '1':
-                    powers_of_2_and_indices[(int(math.pow(2, int(digit))))] = digit
-
+                    powers_of_2_and_indices[int(math.pow(2, digit))] = digit
             # mapped it to a dictionary such that I get the value and the index which also happens to be the power the base is being raised to
 
             # now I know that 2^max_power will be the limit, I can square the numbers up until the comparison equals the math.pow() of 2 and the value max_power - which is obviously the max value of the keys of the dictionary
             max_power = max(list(powers_of_2_and_indices.keys()))
             list_of_values = list(powers_of_2_and_indices.values())
+            use_powers = list(powers_of_2_and_indices.keys())
+
+            power_expressions = [f"{b}^{key}" for key in powers_of_2_and_indices.keys()]
+            self.output.config(text=self.output.cget('text') + "    " + " x ".join(power_expressions) + "\n\n")
 
             # step 2: solve the squares
-            steps_to_complete = len(binary_str) - 1
-            i = 1
+            self.output.config(text=self.output.cget(
+                'text') + f"STEP 2: Square both sides and if you can, reduce further by modulo: \n")
+
             list_of_completed_squares = []
-            for j in range(1, max_power + 1, int(math.pow(2, i))):
-                if i == steps_to_complete:
-                    break
-                post = int(math.pow(b, 2))
+            i = 0
+            post = b
+            post_previous = b
+            self.output.config(text=self.output.cget('text') + f"    {b}^{1} mod {m} \u2261 {post}\n")
+            if 1 in use_powers:
+                list_of_completed_squares.append(b)
+                i = 2
+            else:
+                i = 2
+            while i <= max_power:
+                post = int(math.pow(post, 2))
+                post_print = post
                 if post >= m:
                     post = post % m
-                    if i in list_of_values:
-                        list_of_completed_squares.append(post)
-                i += 1
+
+                    self.output.config(text=self.output.cget('text') + f"    {b}^{i} \u2261 {post_previous}\u00B2 \u2261 {post_print} mod {m} \u2261 {post}\n")
+
+                post_previous = post
+
+                if i in use_powers:
+                    list_of_completed_squares.append(post)
+
+                i *= 2
 
             # step 3: product the values that sum to the exponent
+            self.output.config(text=self.output.cget(
+                'text') + f"\nSTEP 3: Relate the powers you found in step 1 to step 2. Product and divide by modulo: \n")
             list_of_products = list_of_completed_squares.copy()
             final_result = 1
+
+            product_expression2 = " x ".join(str(value) for value in list_of_products)
+            self.output.config(text=self.output.cget('text') + f"   ({product_expression2}) mod {m} \u2261 ")
             for value in list_of_products:
                 final_result = (final_result * value) % m
+                value_print = value
 
             if final_result >= m:
                 final_result = final_result % m
 
-            self.output.config(text=f"final result: {final_result}")
+            self.output.config(text=self.output.cget('text') + f"{final_result} mod ({m})")
 
         except ValueError as ve:
             self.output.config(text=f"Not allowed!")
         except TypeError as e:
             self.output.config(text=f"Integers only!")
-
-    ###################################
 
     def exit_out(self):
         """
