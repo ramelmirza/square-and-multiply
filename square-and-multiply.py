@@ -1,8 +1,8 @@
 """
 Author: Ramel Mirza
-Date: 09-19-2024
+Date: 01-19-2025 (completed) 01-10-2025 (started)
 Description: This script was created for the students at Mohawk College who are taking Discrete Mathematics and Statistics from Mrs. Stojanovska-Pocuca. It acts as a guide to help aid students when studying the square and multiply algorithm.
-Version: 1.01
+Version: 1.04
 """
 import math
 import tkinter as tk
